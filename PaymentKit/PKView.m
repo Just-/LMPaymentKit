@@ -122,6 +122,15 @@
 	return self.defaultTextAttributes[NSForegroundColorAttributeName];
 }
 
+-(void)setImageStyle:(PKViewImageStyle)imageStyle {
+  _imageStyle = imageStyle;
+  if (self.imageStyle == PKViewImageStyleNormal) {
+		UIView *line = [[UIView alloc] initWithFrame:CGRectMake(_placeholderView.frame.size.width - 0.5, 0, 0.5,  _innerView.frame.size.height)];
+		line.backgroundColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:0.3];
+		[self addSubview:line];
+	}
+}
+
 - (void)setup
 {
 	self.imageStyle = PKViewImageStyleNormal;
@@ -153,12 +162,6 @@
 	
     [self addSubview:self.innerView];
     [self addSubview:_placeholderView];
-    
-	if (self.imageStyle == PKViewImageStyleNormal) {
-		UIView *line = [[UIView alloc] initWithFrame:CGRectMake(_placeholderView.frame.size.width - 0.5, 0, 0.5,  _innerView.frame.size.height)];
-		line.backgroundColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:0.3];
-		[self addSubview:line];
-	}
 	
     [self stateCardNumber];
 }
@@ -233,10 +236,11 @@
 		
 		_placeholderView.frame = CGRectMake(0, y, width, height);
 		_placeholderView.contentMode = UIViewContentModeRight;
-	}
-	else {
+	} else if (self.imageStyle == PKViewImageStyleNormal) {
 		_placeholderView.frame = CGRectMake(0, (self.frame.size.height - 32) / 2, 51, 32);
-	}
+  } else if (self.imageStyle == PKViewImageStyleNone) {
+    _placeholderView.frame = CGRectZero;
+  }
 	
 	NSDictionary *attributes = self.defaultTextAttributes;
 	
@@ -373,7 +377,7 @@
     
     [self.innerView addSubview:_cardExpiryField];
     [self.innerView addSubview:_cardCVCField];
-    [_cardExpiryField becomeFirstResponder];
+    if (!_cardExpiryField.hidden) [_cardExpiryField becomeFirstResponder];
 }
 
 - (void)stateCardCVC
@@ -382,7 +386,7 @@
 		[self.delegate paymentView:self didChangeState:PKViewStateCVC];
 	}
 	
-    [_cardCVCField becomeFirstResponder];
+  if (!_cardCVCField.hidden) [_cardCVCField becomeFirstResponder];
 }
 
 - (BOOL)isValid

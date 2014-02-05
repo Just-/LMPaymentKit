@@ -24,7 +24,8 @@ typedef enum {
 
 typedef enum {
 	PKViewImageStyleNormal,
-    PKViewImageStyleOutline
+  PKViewImageStyleOutline,
+  PKViewImageStyleNone
 } PKViewImageStyle;
 
 @protocol PKViewDelegate <NSObject>
