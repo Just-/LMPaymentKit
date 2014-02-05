@@ -124,7 +124,10 @@
 
 -(void)setImageStyle:(PKViewImageStyle)imageStyle {
   _imageStyle = imageStyle;
-  if (self.imageStyle == PKViewImageStyleNormal) {
+  if (imageStyle == PKViewImageStyleNone) {
+    self.placeholderView.hidden = YES;
+    self.placeholderView.frame = CGRectZero;
+  } else if (imageStyle == PKViewImageStyleNormal) {
 		UIView *line = [[UIView alloc] initWithFrame:CGRectMake(_placeholderView.frame.size.width - 0.5, 0, 0.5,  _innerView.frame.size.height)];
 		line.backgroundColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:0.3];
 		[self addSubview:line];
